@@ -4,14 +4,15 @@ const express = require('express');
 const connectDB = require('./config/db');
 const cors = require('cors');
 const path = require('path');
+const qnaRoutes = require('./src/routes/qna');
 
 const app = express();
 // Define Port
 const PORT = process.env.PORT || 5000;
 
 // Init  Middleware
-app.use(express.json({ extended: false }));
 app.use(cors());
+app.use(express.json());
 
 // Connect Database
 connectDB();
@@ -39,7 +40,7 @@ app.use('/api/v1/medicalReports', require('./src/routes/medicalReport'));
 // CallBackRequest endpoint
 app.use('/api/v1/callBackRequests', require('./src/routes/callBackRequest'));
 // QNA endpoint
-app.use('/api/v1/qnas', require('./src/routes/qna'));
+app.use('/api/v1/qnas', qnaRoutes);
 // Company endpoint
 app.use('/api/v1/company', require('./src/routes/company'));
 // RegisterStudent endpoint

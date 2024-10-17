@@ -4,8 +4,8 @@ const router = express.Router();
 const authMiddleware = require('../middlewares/authMiddleware');
 const { addQNA, getQNAById, getAllQNA, updateQNAById, deleteQNAById } = require('../controllers/qna');
 
-// Create a new qna
-router.post('/', addQNA);
+// Create a new qna (now requires authentication)
+router.post('/', authMiddleware, addQNA);
 
 // Get an qna by ID
 router.get('/:id', authMiddleware, getQNAById);

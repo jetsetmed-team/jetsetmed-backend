@@ -13,10 +13,21 @@
 
 const { Schema, model } = require("mongoose");
 
+const qnaItemSchema = new Schema({
+  question: {
+    type: String,
+    required: true
+  },
+  answer: {
+    type: String,
+    required: true
+  }
+}, { _id: false });
+
 const qnaSchema = new Schema({
   qna: {
-    type: Array,
-    require: true,
+    type: [qnaItemSchema],
+    required: true,
   },
   userId: {
     type: Schema.Types.ObjectId,
@@ -26,10 +37,6 @@ const qnaSchema = new Schema({
   isActive: {
     type: Boolean,
     default: true,
-  },
-  pdfPath: {
-    type: String,
-    required: true
   },
   createdAt: {
     type: Date,

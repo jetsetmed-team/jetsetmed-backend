@@ -4,11 +4,19 @@ const { addQNAValidation, updateQNAValidation } = require("../validations/qna");
 
 // Create a new qna
 const addQNA = async (req, res) => {
+  console.log("Received request to add QNA");
+  
   return addQNAValidation(req.body)
     .then(async (data) => {
       try {
-        const qna = new QNA(data);
+        console.log("Validation passed, creating QNA document");
+        const qna = new QNA({
+          qna: data.qna,
+          userId: req.user ? req.user.user.id : null,
+        });
         await qna.save();
+        console.log("QNA document saved successfully");
+        
         return res.status(ResponseCodes.CREATED).json({
           code: ResponseCodes.CREATED,
           success: true,
@@ -16,6 +24,7 @@ const addQNA = async (req, res) => {
           data: qna,
         });
       } catch (error) {
+        console.error("Error in addQNA:", error);
         return res.status(ResponseCodes.BAD_REQUEST).json({
           code: ResponseCodes.BAD_REQUEST,
           success: false,
@@ -25,9 +34,10 @@ const addQNA = async (req, res) => {
       }
     })
     .catch((error) => {
-      return res.status(ResponseCodes.INTERNAL_SERVER_ERROR).json({
-        code: ResponseCodes.INTERNAL_SERVER_ERROR,
-        message: "Schema validation error",
+      console.error("Validation error in addQNA:", error);
+      return res.status(ResponseCodes.BAD_REQUEST).json({
+        code: ResponseCodes.BAD_REQUEST,
+        message: "Validation error",
         error: error,
         success: false,
       });
