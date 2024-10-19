@@ -66,6 +66,7 @@ exports.signup = async (req, res) => {
             .status(ResponseCodes.CREATED)
             .json({
               code: UserResponseCodes.USER_SUCCESS,
+              role: user.role,
               success: true,
               message: "Signup successfully",
               token,
@@ -135,6 +136,7 @@ exports.login = async (req, res) => {
         .status(ResponseCodes.CREATED)
         .json({
           code: UserResponseCodes.USER_SUCCESS,
+          role: user.role,
           success: true,
           message: "Login successfully",
           token,
